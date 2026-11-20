@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f2f4f5">
+    <meta name="robots" content="noindex, nofollow">
+    <title>VEXO — لوحة الإدارة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="admin.js"></script>
+  </head>
+  <body class="admin-body">
+    <header class="admin-header">
+      <a class="admin-brand" href="index.html">
+        <img src="assets/vexo-mark.png" alt="">
+        <span>VEXO<small data-i18n="adminLabel">ADMIN STUDIO</small></span>
+      </a>
+      <div class="admin-header-actions">
+        <div class="language-switch" role="group" aria-label="Language">
+          <button type="button" data-language="ar">AR</button><span></span>
+          <button type="button" data-language="en">EN</button><span></span>
+          <button type="button" data-language="fr">FR</button>
+        </div>
+        <a href="index.html" data-i18n="backToSite">العودة إلى الموقع ↗</a>
+      </div>
+    </header>
+    <main class="admin-main">
+      <div class="admin-heading">
+        <div>
+          <p class="eyebrow"><span class="status-dot"></span><span data-i18n="adminEyebrow">مساحة آمنة لإدارة أعمالك</span></p>
+          <h1 data-i18n="adminTitle">لوحة الإدارة</h1>
+        </div>
+        <p data-i18n="adminDescription">أضف أعمالك إلى المعرض باستخدام روابط YouTube أو Instagram Reels أو TikTok.</p>
+      </div>
+
+      <section id="login-card" class="admin-login-card">
+        <h2 data-i18n="loginTitle">تسجيل الدخول</h2>
+        <p data-i18n="loginDescription">سجّل الدخول ببريد المدير وكلمة المرور المسجّلين في Firebase Authentication.</p>
+        <form id="login-form" class="admin-form">
+          <div class="form-field">
+            <label for="login-email" data-i18n="emailLabel">البريد الإلكتروني</label>
+            <input id="login-email" name="email" type="email" autocomplete="username" required>
+          </div>
+          <div class="form-field">
+            <label for="login-password" data-i18n="passwordLabel">كلمة المرور</label>
+            <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+          </div>
+          <div id="login-error" class="form-error" role="alert"></div>
+          <button id="login-button" class="admin-button" type="submit" data-i18n="loginButton">دخول آمن <span>↗</span></button>
+        </form>
+        <div class="login-footer" data-i18n="noPublicSignup">لا يوجد إنشاء حسابات عامة.</div>
+      </section>
+
+      <section id="dashboard" class="admin-dashboard" hidden>
+        <div class="dashboard-bar">
+          <span class="signed-user"><span data-i18n="signedInAs">مسجّل الدخول:</span> <strong id="signed-user-email"></strong></span>
+          <button id="logout-button" class="admin-button secondary small" type="button" data-i18n="logoutButton">تسجيل الخروج</button>
+        </div>
+        <div class="dashboard-grid">
+          <section class="admin-panel">
+            <h2 id="form-title" data-i18n="addProjectTitle">إضافة عمل جديد</h2>
+            <p class="panel-caption" data-i18n="formDescription">أدخل بيانات العمل والرابط المباشر للفيديو.</p>
+            <form id="project-form" class="admin-form">
+              <div class="form-field">
+                <label for="project-title" data-i18n="projectTitleLabel">عنوان العمل</label>
+                <input id="project-title" name="title" maxlength="100" required>
+              </div>
+              <div class="form-field">
+                <label for="project-description" data-i18n="projectDescriptionLabel">وصف مختصر (اختياري)</label>
+                <textarea id="project-description" name="description" maxlength="500"></textarea>
+              </div>
+              <div class="form-field">
+                <label for="project-category" data-i18n="categoryLabel">التصنيف</label>
+                <select id="project-category" name="category">
+                  <option value="commercial" data-i18n="categoryCommercial">إعلان تجاري</option>
+                  <option value="social" data-i18n="categorySocial">محتوى اجتماعي</option>
+                  <option value="documentary" data-i18n="categoryDocumentary">وثائقي</option>
+                  <option value="motion" data-i18n="categoryMotion">موشن جرافيك</option>
+                  <option value="music" data-i18n="categoryMusic">فيديو موسيقي</option>
+                  <option value="other" data-i18n="categoryOther">متنوع</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="project-url" data-i18n="videoUrlLabel">رابط الفيديو</label>
+                <input id="project-url" name="videoUrl" type="url" placeholder="https://..." required>
+                <span class="form-hint" data-i18n="videoUrlHint">روابط YouTube وInstagram Reels وTikTok فقط.</span>
+              </div>
+              <div class="form-field">
+                <label for="project-thumbnail" data-i18n="thumbnailLabel">رابط صورة الغلاف (اختياري)</label>
+                <input id="project-thumbnail" name="thumbnailUrl" type="url" placeholder="https://...">
+                <span class="form-hint" data-i18n="thumbnailHint">لمقاطع إنستغرام الخاصة أو التي لا تسمح بالتضمين، أضف رابط صورة الغلاف هنا.</span>
+              </div>
+              <label class="checkbox-field"><input type="checkbox" name="featured"><span data-i18n="featuredLabel">تمييز هذا العمل</span></label>
+              <div id="project-error" class="form-error" role="alert"></div>
+              <div class="form-actions">
+                <button id="save-button" class="admin-button" type="submit" data-i18n="saveProject">حفظ العمل</button>
+                <button id="cancel-edit" class="admin-button secondary" type="button" hidden data-i18n="cancelEdit">إلغاء التعديل</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="admin-panel">
+            <h2 data-i18n="manageProjectsTitle">الأعمال المنشورة</h2>
+            <p class="panel-caption"><span id="managed-count">0</span> <span data-i18n="managedCount">عمل في المعرض</span></p>
+            <div id="managed-projects" class="managed-list" aria-live="polite"></div>
+            <div class="admin-notice" data-i18n="securityNotice">تُخزَّن روابط الفيديو والبيانات في Firestore. تُعرض الفيديوهات من منصاتها الأصلية دون رفع ملفات الفيديو إلى موقعك.</div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <footer class="admin-footer">VEXO STUDIO · <span data-i18n="adminFooter">لوحة إدارة محمية بـ Firebase Authentication</span></footer>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

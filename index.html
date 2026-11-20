@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b1015">
+    <meta name="description" content="VEXO — مونتاج يصنع الفرق. شاهد أعمال الفيديو والإبداع البصري.">
+    <title>VEXO — مونتاج يصنع الفرق</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+      (() => {
+        const messages = {
+          ar: {
+            fileTitle: "افتح الموقع عبر خادم محلي",
+            fileBody: "فتح index.html مباشرة من الملفات يمنع المتصفح من تحميل Firebase. شغّل إضافة Live Server في VS Code وافتح الموقع عبر http://localhost، أو انشره على استضافة HTTPS.",
+            loadTitle: "تعذّر تحميل الأعمال حتى الآن",
+            loadBody: "تحقّق من الاتصال بالإنترنت، ومن إنشاء قاعدة Firestore والسماح بقراءة الأعمال، ثم أعد تحميل الصفحة.",
+          },
+          en: {
+            fileTitle: "Open the site through a local server",
+            fileBody: "Opening index.html directly prevents the browser from loading Firebase. Start VS Code's Live Server and open the localhost URL, or deploy the site over HTTPS.",
+            loadTitle: "Projects are taking longer to load",
+            loadBody: "Check your internet connection, make sure Firestore exists and allows project reads, then reload the page.",
+          },
+          fr: {
+            fileTitle: "Ouvrez le site via un serveur local",
+            fileBody: "Ouvrir index.html directement empêche le navigateur de charger Firebase. Lancez Live Server dans VS Code et ouvrez l'adresse localhost, ou publiez le site en HTTPS.",
+            loadTitle: "Le chargement des projets prend du temps",
+            loadBody: "Vérifiez votre connexion, l'existence de Firestore et les règles de lecture des projets, puis rechargez la page.",
+          },
+        };
+        let language = document.documentElement.lang;
+        try {
+          const savedLanguage = localStorage.getItem("vexo-language");
+          if (messages[savedLanguage]) language = savedLanguage;
+        } catch (error) {
+          console.warn("Could not read the saved language preference:", error);
+        }
+
+        function showNotice(kind) {
+          const grid = document.getElementById("projects-grid");
+          if (!grid) {
+            window.setTimeout(() => showNotice(kind), 100);
+            return;
+          }
+          if (kind === "load" && !grid.querySelector(".loading-state")) return;
+          const notice = document.createElement("div");
+          notice.className = "error-state startup-error";
+          const copy = messages[language] || messages.en;
+          const title = document.createElement("strong");
+          const details = document.createElement("span");
+          title.textContent = kind === "file" ? copy.fileTitle : copy.loadTitle;
+          details.textContent = kind === "file" ? copy.fileBody : copy.loadBody;
+          notice.append(title, details);
+          grid.replaceChildren(notice);
+        }
+
+        if (window.location.protocol === "file:") {
+          document.documentElement.classList.add("local-file");
+          window.setTimeout(() => showNotice("file"), 0);
+        } else {
+          window.setTimeout(() => showNotice("load"), 15000);
+        }
+      })();
+    </script>
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="VEXO — الصفحة الرئيسية">
+        <img src="assets/vexo-logo.png" alt="VEXO">
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#work" data-i18n="navWork">الأعمال</a>
+        <a href="#about" data-i18n="navAbout">نبذة</a>
+        <a href="#contact" data-i18n="navContact">تواصل</a>
+      </nav>
+      <div class="header-actions">
+        <div class="language-switch" role="group" aria-label="Language">
+          <button type="button" data-language="ar" aria-label="العربية">AR</button>
+          <span></span>
+          <button type="button" data-language="en" aria-label="English">EN</button>
+          <span></span>
+          <button type="button" data-language="fr" aria-label="Français">FR</button>
+        </div>
+        <a class="header-cta" href="#contact" data-i18n="startProject">ابدأ مشروعك <span>↗</span></a>
+      </div>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-noise"></div>
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span class="status-dot"></span><span data-i18n="heroEyebrow">استوديو مونتاج وإبداع بصري</span></p>
+          <h1 data-i18n="heroTitle">كل لقطة<br>لها <span>حكاية.</span></h1>
+          <p class="hero-description" data-i18n="heroDescription">نحوّل فكرتك إلى صورة تتحرك، وصوت يُحسّ، وقصة تبقى في الذاكرة.</p>
+          <div class="hero-actions">
+            <a class="button button-blue" href="#work"><span data-i18n="exploreWork">اكتشف أعمالي</span><span class="button-arrow">↙</span></a>
+            <a class="text-link" href="#about"><span data-i18n="moreAbout">تعرّف عليّ</span><span>↙</span></a>
+          </div>
+          <div class="hero-footnote"><span>01 — 03</span><span data-i18n="heroFootnote">فكرة · مونتاج · أثر</span></div>
+        </div>
+        <div class="hero-art reveal" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="art-panel">
+            <div class="art-grid"></div>
+            <div class="art-sheen"></div>
+            <div class="art-frame">
+              <span class="frame-corner corner-one"></span><span class="frame-corner corner-two"></span>
+              <span class="frame-corner corner-three"></span><span class="frame-corner corner-four"></span>
+              <div class="frame-crosshair">+</div>
+            </div>
+            <div class="art-label"><span>VEXO / VISUALS</span><span>24° 42′ N — 46° 40′ E</span></div>
+            <div class="art-play"><span>▶</span></div>
+            <div class="art-index">V<span>.</span>01</div>
+            <div class="art-caption"><span data-i18n="artCaption">صورة. بإحساس مختلف.</span><span>© VEXO STUDIO</span></div>
+          </div>
+          <div class="floating-note note-top"><span class="note-icon">✳</span><span data-i18n="floatingNote">كل إطار محسوب</span></div>
+          <div class="floating-note note-bottom"><span>4K</span><span data-i18n="qualityNote">تفاصيل تستحق المشاهدة</span></div>
+        </div>
+        <a href="#work" class="scroll-cue"><span></span><span data-i18n="scroll">مرّر للاستكشاف</span></a>
+      </section>
+
+      <section class="work-section section-shell" id="work">
+        <div class="section-heading reveal">
+          <div>
+            <p class="eyebrow section-eyebrow"><span>01</span><span data-i18n="selectedWork">مختارات من أعمالي</span></p>
+            <h2 data-i18n="workTitle">مشاريع <span>تتحدث.</span></h2>
+          </div>
+          <p class="section-aside" data-i18n="workDescription">من الفكرة الأولى إلى آخر فريم — أعمال صُنعت بعناية لتصل إلى جمهورك.</p>
+        </div>
+        <div class="work-toolbar"><span id="project-count" class="project-count"></span></div>
+        <div id="projects-grid" class="projects-grid" aria-live="polite">
+          <div class="loading-state"><span class="loader"></span><span data-i18n="loading">جارٍ تحميل الأعمال...</span></div>
+        </div>
+      </section>
+
+      <section class="about-section" id="about">
+        <div class="about-inner section-shell">
+          <div class="about-mark reveal"><img src="assets/vexo-mark.png" alt="" aria-hidden="true"><span>VEXO / ABOUT</span></div>
+          <div class="about-copy reveal">
+            <p class="eyebrow"><span>02</span><span data-i18n="aboutEyebrow">خلف كل لقطة، فكرة</span></p>
+            <h2 data-i18n="aboutTitle">أصنع محتوى<br>يستحق <span>التوقّف.</span></h2>
+            <p data-i18n="aboutDescription">أنا محرر فيديو أؤمن بأن المونتاج ليس مجرد ترتيب لقطات، بل فنّ يمنح كل قصة إيقاعها وصوتها الخاص. من فيديوهات السوشيال ميديا إلى المحتوى الإعلاني، أعمل على أن يصل شعورك كما أردته تماماً.</p>
+            <div class="skills-row"><span data-i18n="skillEditing">مونتاج إبداعي</span><span data-i18n="skillSocial">محتوى قصير</span><span data-i18n="skillColor">معالجة لونية</span><span data-i18n="skillSound">تصميم صوتي</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact-section section-shell" id="contact">
+        <div class="contact-card reveal">
+          <div class="contact-orb"></div>
+          <p class="eyebrow"><span>03</span><span data-i18n="contactEyebrow">الخطوة الأولى تبدأ هنا</span></p>
+          <h2 data-i18n="contactTitle">لديك قصة؟<br><span>لنعرضها للعالم.</span></h2>
+          <a class="button button-light button-whatsapp" href="https://wa.me/213562098325" target="_blank" rel="noopener noreferrer">
+            <svg class="whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.83 11.83 0 0 0 12.1 0C5.55 0 .22 5.33.22 11.9c0 2.1.55 4.15 1.6 5.95L.12 24l6.3-1.65a11.85 11.85 0 0 0 5.67 1.44h.01c6.56 0 11.9-5.34 11.9-11.9 0-3.18-1.24-6.17-3.48-8.41ZM12.1 21.77h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.52-5.24c0-5.46 4.45-9.91 9.92-9.91a9.86 9.86 0 0 1 7.02 2.91 9.86 9.86 0 0 1 2.9 7.02c0 5.47-4.45 9.92-9.93 9.92Zm5.44-7.43c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.78.97-.96 1.17-.18.2-.35.22-.65.07-.3-.15-1.26-.47-2.4-1.5-.89-.8-1.5-1.78-1.68-2.08-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.53.15-.17.2-.3.3-.5.1-.2.05-.38-.03-.53-.07-.15-.68-1.63-.93-2.23-.24-.58-.49-.5-.68-.51h-.58c-.2 0-.53.08-.81.38-.28.3-1.06 1.03-1.06 2.5 0 1.48 1.09 2.9 1.24 3.1.15.2 2.14 3.27 5.19 4.59.72.31 1.28.5 1.71.64.72.23 1.38.2 1.9.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/></svg>
+            <span data-i18n="whatsappButton">تواصل معي عبر واتساب</span><span class="button-arrow">↗</span>
+          </a>
+          <div class="contact-details">
+            <a class="contact-number" href="https://wa.me/213562098325" target="_blank" rel="noopener noreferrer" dir="ltr">+213 562 098 325</a>
+            <a class="contact-email" href="mailto:hello@vexo.studio">hello@vexo.studio</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer section-shell">
+      <a class="footer-brand" href="#home">VEXO<span>®</span></a>
+      <p data-i18n="footerNote">إطارات تصنع فرقاً.</p>
+      <span class="copyright">© <span id="year"></span> VEXO</span>
+    </footer>
+
+    <dialog class="video-dialog" id="video-dialog" aria-label="Project video">
+      <button class="dialog-close" type="button" aria-label="Close">×</button>
+      <div class="video-dialog-frame"></div>
+      <div class="video-dialog-caption"></div>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
